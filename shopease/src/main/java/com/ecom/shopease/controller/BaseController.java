@@ -10,4 +10,8 @@ public class BaseController {
     public String home() {
         return "Welcome to Shopease!";
     }
+    @GetMapping("/")
+    public String ErrorPage() {
+        return "this is home page";
+    }
 }
