@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopEase Architecture Overview</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --light-bg: #ecf0f1;
+            --dark-text: #2c3e50;
+            --light-text: #fff;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-text);
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--light-text);
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        section {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        h1, h2, h3 {
+            color: var(--secondary-color);
+            margin-top: 0;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            border-bottom: 2px solid var(--light-bg);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .tech-item {
+            background-color: var(--light-bg);
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+        }
+        
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--light-bg);
+        }
+        
+        th {
+            background-color: var(--light-bg);
+            font-weight: 600;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        .role {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .public {
+            background-color: #e1f5fe;
+            color: #0277bd;
+        }
+        
+        .user {
+            background-color: #e8f5e9;
+            color: #388e3c;
+        }
+        
+        .admin {
+            background-color: #fff3e0;
+            color: #e65100;
+        }
+        
+        .method {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        .get {
+            background-color: #e3f2fd;
+            color: #1565c0;
+        }
+        
+        .post {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .put {
+            background-color: #fff8e1;
+            color: #ff8f00;
+        }
+        
+        .delete {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        
+        .db-schema {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .table-card {
+            background-color: white;
+            border: 1px solid var(--light-bg);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .table-name {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            margin: -1rem -1rem 1rem -1rem;
+            font-weight: 600;
+        }
+        
+        .column {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--light-bg);
+        }
+        
+        .column:last-child {
+            border-bottom: none;
+        }
+        
+        .column-name {
+            font-weight: 500;
+        }
+        
+        .column-type {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .constraint {
+            display: inline-block;
+            background-color: #f0f0f0;
+            color: #666;
+            font-size: 0.75rem;
+            padding: 0.1rem 0.3rem;
+            border-radius: 3px;
+            margin-left: 0.3rem;
+        }
+        
+        .architecture-diagram {
+            text-align: center;
+            margin: 2rem 0;
+        }
+        
+        .modules {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .module-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+        }
+        
+        .module-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .module-title svg {
+            margin-right: 0.5rem;
+        }
+        
+        ul {
+            padding-left: 1.5rem;
+            margin-bottom: 0;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            table {
+                font-size: 0.8rem;
+            }
+            
+            th, td {
+                padding: 0.5rem;
+            }
+            
+            .tech-stack {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>ShopEase E-Commerce Platform</h1>
+            <p>A Full-Stack E-Commerce Web Application Architecture Overview</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <section>
+            <h2>Project Overview</h2>
+            <p>ShopEase is a full-stack e-commerce web application designed to allow users to browse products, manage shopping carts, place orders, and perform secure transactions. The backend exposes RESTful APIs consumed by a React.js frontend with secure user authentication, role-based authorization, product management, and order processing.</p>
+            
+            <h3>Tech Stack</h3>
+            <div class="tech-stack">
+                <div class="tech-item">Java 17</div>
+                <div class="tech-item">Spring Boot 3.x</div>
+                <div class="tech-item">Spring Data JPA</div>
+                <div class="tech-item">Spring Security + JWT</div>
+                <div class="tech-item">MySQL 8.x</div>
+                <div class="tech-item">Maven</div>
+                <div class="tech-item">RESTful API</div>
+                <div class="tech-item">Jackson</div>
+            </div>
+        </section>
+        
+        <section>
+            <h2>System Architecture</h2>
+            <div class="architecture-diagram">
+                <svg width="800" height="400" viewBox="0 0 800 400">
+                    <!-- Background Grid -->
+                    <defs>
+                        <pattern id="smallGrid" width="10" height="10" patternUnits="userSpaceOnUse">
+                            <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#f0f0f0" stroke-width="0.5"/>
+                        </pattern>
+                        <pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
+                            <rect width="100" height="100" fill="url(#smallGrid)"/>
+                            <path d="M 100 0 L 0 0 0 100" fill="none" stroke="#e0e0e0" stroke-width="1"/>
+                        </pattern>
+                    </defs>
+                    <rect width="800" height="400" fill="url(#grid)" />
+                    
+                    <!-- Frontend -->
+                    <rect x="50" y="50" width="150" height="100" rx="10" ry="10" fill="#3498db" opacity="0.8"/>
+                    <text x="125" y="100" text-anchor="middle" fill="white" font-weight="bold">React Frontend</text>
+                    
+                    <!-- Backend -->
+                    <rect x="325" y="50" width="150" height="300" rx="10" ry="10" fill="#2c3e50" opacity="0.8"/>
+                    <text x="400" y="80" text-anchor="middle" fill="white" font-weight="bold">Spring Boot</text>
+                    <text x="400" y="100" text-anchor="middle" fill="white" font-size="12">RESTful API Backend</text>
+                    
+                    <!-- Modules -->
+                    <rect x="345" y="120" width="110" height="30" rx="5" ry="5" fill="white" opacity="0.9"/>
+                    <text x="400" y="140" text-anchor="middle" fill="#2c3e50" font-size="12">User Module</text>
+                    
+                    <rect x="345" y="160" width="110" height="30" rx="5" ry="5" fill="white" opacity="0.9"/>
+                    <text x="400" y="180" text-anchor="middle" fill="#2c3e50" font-size="12">Product Module</text>
+                    
+                    <rect x="345" y="200" width="110" height="30" rx="5" ry="5" fill="white" opacity="0.9"/>
+                    <text x="400" y="220" text-anchor="middle" fill="#2c3e50" font-size="12">Cart Module</text>
+                    
+                    <rect x="345" y="240" width="110" height="30" rx="5" ry="5" fill="white" opacity="0.9"/>
+                    <text x="400" y="260" text-anchor="middle" fill="#2c3e50" font-size="12">Order Module</text>
+                    
+                    <rect x="345" y="280" width="110" height="30" rx="5" ry="5" fill="white" opacity="0.9"/>
+                    <text x="400" y="300" text-anchor="middle" fill="#2c3e50" font-size="12">Admin Module</text>
+                    
+                    <!-- Database -->
+                    <rect x="600" y="150" width="150" height="100" rx="10" ry="10" fill="#e74c3c" opacity="0.8"/>
+                    <text x="675" y="200" text-anchor="middle" fill="white" font-weight="bold">MySQL</text>
+                    
+                    <!-- Connections -->
+                    <path d="M 200 100 L 325 100" stroke="#666" stroke-width="2" stroke-dasharray="5,5"/>
+                    <text x="262" y="90" text-anchor="middle" fill="#666" font-size="12">HTTP/JSON</text>
+                    
+                    <path d="M 475 200 L 600 200" stroke="#666" stroke-width="2" stroke-dasharray="5,5"/>
+                    <text x="537" y="190" text-anchor="middle" fill="#666" font-size="12">JPA/JDBC</text>
+                </svg>
+            </div>
+        </section>
+        
+        <section>
+            <h2>Application Modules</h2>
+            <div class="modules">
+                <div class="module-card">
+                    <div class="module-title">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        User Module
+                    </div>
+                    <ul>
+                        <li>User Registration</li>
+                        <li>Authentication with JWT</li>
+                        <li>Role-based Authorization</li>
+                        <li>User Profile Management</li>
+                    </ul>
+                </div>
+                
+                <div class="module-card">
+                    <div class="module-title">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                            <line x1="8" y1="21" x2="16" y2="21"></line>
+                            <line x1="12" y1="17" x2="12" y2="21"></line>
+                        </svg>
+                        Product Module
+                    </div>
+                    <ul>
+                        <li>CRUD Operations (Admin)</li>
+                        <li>Product Browsing</li>
+                        <li>Search & Pagination</li>
+                        <li>Image URL Support</li>
+                    </ul>
+                </div>
+                
+                <div class="module-card">
+                    <div class="module-title">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        Cart Module
+                    </div>
+                    <ul>
+                        <li>Add/Remove Items</li>
+                        <li>Update Quantities</li>
+                        <li>Dynamic Price Calculation</li>
+                        <li>Cart Persistence</li>
+                    </ul>
+                </div>
+                
+                <div class="module-card">
+                    <div class="module-title">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <path d="M16 10a4 4 0 0 1-8 0"></path>
+                        </svg>
+                        Order Module
+                    </div>
+                    <ul>
+                        <li>Place Orders</li>
+                        <li>Order History</li>
+                        <li>Status Updates</li>
+                        <li>Order Details Retrieval</li>
+                    </ul>
+                </div>
+                
+                <div class="module-card">
+                    <div class="module-title">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                        </svg>
+                        Admin Module
+                    </div>
+                    <ul>
+                        <li>User Management</li>
+                        <li>Order Management</li>
+                        <li>Product Management</li>
+                        <li>Sales Analytics (Future)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <section>
+            <h2>API Endpoints</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Endpoint</th>
+                        <th>Method</th>
+                        <th>Description</th>
+                        <th>Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Auth Endpoints -->
+                    <tr>
+                        <td>/api/auth/register</td>
+                        <td><span class="method post">POST</span></td>
+                        <td>Register new user</td>
+                        <td><span class="role public">Public</span></td>
+                    </tr>
+                    <tr>
+                        <td>/api/auth/login</td>
+                        <td><span class="method post">POST</span></td>
+                        <td>Authenticate user and generate JWT</td>
+                        <td><span class="role public">Public</span></td>
+                    </tr>
+                    
+                    <!-- Product Endpoints -->
+                    <tr>
+                        <td>/api/products</td>
+                        <td><span class="method get">GET</span></td>
+                        <td>Get all products (with pagination)</td>
+                        <td><span class="role public">Public</span></td>
+                    </tr>
+                    <tr>
+                        <td>/api/products/{id}</td>
+                        <td><span class="method get">GET</span></td>
+                        <td>Get single product by ID</td>
+                        <td><span class="role public">Public</span></td>
+                    </tr>
+                    <tr>
+                        <td>/api/products</td>
+                        <td><span class="method post">POST</span></td>
+                        <td>Create new product</td>
+                        <td><span class="role admin">Admin</span></td>
+                    </tr>
+                    <tr>
+                        <td>/api/products/{id}</td>
+                        <td><span class="method put">PUT</span></td>
+                        <td>Update product</td>
+                        <td><span class="role admin">Admin</span></td>
+                    </tr>
+                    <tr>
+                        <td>/api/products/{id}</td>
+                        <td><span class="method delete">DELETE</span></td>
+                        <td>Delete product</td>
+                        <td><span class="role admin">Admin</span></td>
+                    </tr>
+                    
+                    <!-- Cart Endpoints -->
+                    <tr>
+                        <td>/api/cart</td>
+                        <td><span class="method get">GET</span></td>
+                        <td>Get current user's cart</td>
+                        <td><span class="role user">User</span></td>
+                    </tr>
+                    <tr>
+                        <td>/api/cart/add</td>
+                        <td><span class="method post">POST</span></td>
+                        <td>Add item to cart</td>
+                        <td><span class="role user">User</span></td>
+                    </tr>
+                    <tr>
+                        <td>/api/cart/update</td>
+                        <td><span class="method put">PUT</span></td>
+                        <td>Update cart item quantity</td>
+                        <td><span class="role user">User</span></td>
+                    </tr>
+                    <tr>
+                        <td>/api/cart/remove/{itemId}</td>
+                        <td><span class="method delete">DELETE</span></td>
+                        <td>Remove item from cart</td>
+                        <td><span class="role user">User</span></td>
+                    </tr>
+                    
+                    <!-- Order Endpoints -->
+                    <tr>
+                        <td>/api/orders</td>
+                        <td><span class="method post">POST</span></td>
+                        <td>Place order</td>
+                        <td><span class="role user">User</span></td>
+                    </tr>
+                    <tr>
+                        <td>/api/orders</td>
+                        <td><span class="method get">GET</span></td>
+                        <td>Get order history</td>
+                        <td><span class="role user">User</span></td>
+                    </tr>
+                    
+                    <!-- Admin Endpoints -->
+                    <tr>
+                        <td>/api/admin/orders</td>
+                        <td><span class="method get">GET</span></td>
+                        <td>View all orders</td>
+                        <td><span class="role admin">Admin</span></td>
+                    </tr>
+                    <tr>
+                        <td>/api/admin/orders/{id}/status</td>
+                        <td><span class="method put">PUT</span></td>
+                        <td>Update order status</td>
+                        <td><span class="role admin">Admin</span></td>
+                    </tr>
+                    <tr>
+                        <td>/api/admin/users</td>
+                        <td><span class="method get">GET</span></td>
+                        <td>Get all users</td>
+                        <td><span class="role admin">Admin</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        
+        <section>
+            <h2>Database Schema</h2>
+            <div class="db-schema">
+                <!-- Users Table -->
+                <div class="table-card">
+                    <div class="table-name">users</div>
+                    <div class="column">
+                        <span class="column-name">id</span>: 
+                        <span class="column-type">bigint</span>
+                        <span class="constraint">PK</span>
+                    </div>
+                    <div class="column">
+                        <span class="column-name">name</span>: 
+                        <span class="column-type">varchar(255)</span>
+                    </div>
+                    <div class="column">
+                        <span class="column-name">email</span>: 
+                        <span class="column-type">varchar(255)</span>
+                        <span class="constraint">unique</span>
+                    </div>
+                    <div class="column">
+                        <span class="column-name">password</span>: 
+                        <span class="column-type">varchar(255)</span>
+                        <span class="constraint">hashed</span>
+                    </div>
+                    <div class="column">
+                        <span class="column-name">role</span>: 
+                        <span class="column-type">enum('USER', 'ADMIN')</span>
+                    </div>
+                </div>
+                
+                <!-- Products Table -->
+                <div class="table-card">
+                    <div class="table-name">products</div>
+                    <div class="column">
+                        <span class="column-name">id</span>: 
+                        <span class="column-type">bigint</span>
+                        <span class="constraint">PK</span>
+                    </div>
+                    <div class="column">
+                        <span class="column-name">name</span>: 
+                        <span class="column-type">varchar(255)</span>
+                    </div>
+                    <div class="column">
+                        <span class="column-name">description</span>: 
+                        <span class="column-type">text</span>
+                    </div>
+                    <div class="column">
+                        <span class="column-name">price</span>: 
+                        <span class="column-type">decimal(10,2)</span>
+                    </div>
+                    <div class="column">
+                        <span class="column-name">stock</span>: 
+                        <span class="column-type">int</span>
+                    </div>
+                    <div class="column">
+                        <span class="column-name">image_url</span>: 
+                        <span class="column-type">varchar(255)</span>
+                    </div>
+                </div>
+                
+                <!-- Cart Table -->
+                <div class="table-card">
+                    <div class="table-name">cart</div>
+                    <div class="column">
+                        <span class="column-name">id</span>: 
+                        <span class="column-type">bigint</span>
+                        <span class="constraint">PK</span>
+                    </div>
+                    <div class="column">
+                        <span class="column-name">user_id</span>: 
+                        <span class="column-type">bigint</span>
+                        <span class="constraint">FK</span>
+                    </div>
+                </div>
+                
+                <!-- Cart Items Table -->
+                <div class="table-card">
+                    <div class="table-name">cart_items</div>
+                    <div class="column">
+                        <span class="column-name">id</span>: 
+                        <span class="column-type">bigint</span>
+                        <span class="constraint">PK</span>
+                    </div>
+                    <div class="column">
+                        <span class="column-name">cart_id</span>: 
+                        <span class="column-type">bigint</span>
+                        <span class="constraint">FK</span>
+                    </div>
+                    <div class="column">
+                        <span class="column-name">product_id</span>: 
+                        <span class="column-type">bigint</span>
+                        <span class="constraint">FK</span>
+                    </div>
+                    <div class="column">
+                        <span class="column-name">quantity</span>: 
+                        <span class="column-type">int</span>
+                    </div>
+                </div>
+                
+                <!-- Orders Table -->
+                <div class="table-card">
+                    <div class="table-name">orders</div>
+                    <div class="column">
+                        <span class="column-name">id</span>: 
+                        <span class="column-type">bigint</span>
+                        <span class="constraint">PK</span>
+                    </div>
+                    <div class="column">
+                        <span class="column-name">user_id</span>: 
+                        <span class="column-type">bigint</span>
+                        <span class="constraint">FK</span>
+                    </div>
+                    <div class="column">
+                        <span class="column-name">total_price</span>: 
+                        <span class="column-type">decimal(10,2)</span>
+                    </div>
+                    <div class="column">
+                        <span class="column-name">status</span>: 
+                        <span class="column-type">enum('PENDING', 'SHIPPED', 'DELIVERED')</span>
+                    </div>
+                    <div class="column">
+                        <span class="column-name">created_at</span>: 
+                        <span class="column-type">timestamp</span>
+                    </div>
+                </div>
+                
+                <!-- Order Items Table -->
+                <div class="table-card">
+                    <div class="table-name">order_items</div>
+                    <div class="column">
+                        <span class="column-name">id</span>: 
+                        <span class="column-type">bigint</span>
+                        <span class="constraint">PK</span>
+                    </div>
+                    <div class="column">
+                        <span class="column-name">order_id</span>: 
+                        <span class="column-type">bigint</span>
+                        <span class="constraint">FK</span>
+                    </div>
+                    <div class="column">
+                        <span class="column-name">product_id</span>: 
+                        <span class="column-type">bigint</span>
+                        <span class="constraint">FK</span>
+                    </div>
+                    <div class="column">
+                        <span class="column-name">quantity</span>: 
+                        <span class="column-type">int</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section>
+            <h2>Security Implementation</h2>
+            <p>Authentication and authorization are implemented using Spring Security with JSON Web Tokens (JWT).</p>
+            
+            <h3>Authentication Flow</h3>
+            <ol>
+                <li>User submits credentials to <code>/api
