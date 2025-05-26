@@ -24,7 +24,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
             .authorizeHttpRequests()
-            .requestMatchers("/api/auth/**").permitAll() // Allow public access to auth endpoints
+            .requestMatchers("/api/auth/**").permitAll()
             .anyRequest().authenticated() // Secure all other endpoints
             .and()
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // Add JWT filter
