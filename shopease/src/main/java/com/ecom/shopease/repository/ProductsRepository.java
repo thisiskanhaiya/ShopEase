@@ -10,4 +10,5 @@ import com.ecom.shopease.model.Products;
 @Repository
 public interface ProductsRepository extends  JpaRepository<Products,Long > {
     Optional<Products> findByName(String name);
+    boolean existsById(Long id);
 }

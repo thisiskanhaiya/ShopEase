@@ -27,4 +27,12 @@ public class ProductsService {
         return productRepo.findById(id).orElse(null);
     }
 
+    public void deleteById(Long id) {
+        productRepo.deleteById(id);
+    }
+
+    public boolean existsById(Long id) {
+       return productRepo.existsById(id);
+ }
+
 }
